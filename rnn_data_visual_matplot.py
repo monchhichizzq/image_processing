@@ -73,7 +73,6 @@ def remove_cols_in_gesture(X):
     return np.array(X_short)
 
 def distance(p1, p2):
-    d2 =
     d = np.sqrt((p2[0]-p1[0])**2+(p2[1]-p1[1])**2)
     return d
 
@@ -127,6 +126,7 @@ def read_data(path):
                                     filenames_2_rearrange.append(filename_2)
                             gesture = []
                             gesture_1D = []
+                            gesture_time_1D = []
                             t = 0
                             plt.ion()
                             # ax0 = plt.gca()
@@ -137,40 +137,57 @@ def read_data(path):
                                 if gesture:
                                     g_txt = zero_rows_complete(g_txt, gesture[t-1])
                                 g_txt_1D = []
+                                g_time_1D = []
                                 for i in range(len(g_txt)):
                                     # 计算各点到中心的距离
                                     d = distance(g_txt[i], g_txt[1])
                                     g_txt_1D.append(d)
                                 # one completed gesture
                                 gesture.append(g_txt)
+                                # one completed gesture 1D
                                 gesture_1D.append(g_txt_1D)
-                                # print(np.array(gesture_1D).shape)
+                                for i in range(len(g_txt)):
+                                    if t == 0:
+                                        d_time = gesture_1D[t][i]
+                                    else:
+                                        d_time = gesture_1D[t][i] - gesture_1D[t-1][i]
+                                        # print(np.array(gesture_1D).shape)
+                                    g_time_1D.append(d_time)
+                                # print(np.array(g_time_1D).shape)
+                                # one completed gesture 1D
+                                gesture_time_1D.append(g_time_1D)
+                                # print(np.array(gesture_time_1D).shape)
                                 x = np.arange(0, np.array(gesture_1D).shape[0])
                                 ax0 = plt.subplot(111)
                                 ax0.set_title('Gesture_'+dirname)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 0], c='y', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 1], c='y', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 2], c='r', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 3], c='r', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 4], c='r', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 5], c='r', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 6], c='r', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 7], c='r', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 8], c='b', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 9], c='b', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 10], c='b', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 11], c='b', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 12], c='b', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 13], c='b', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 14], c='y', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 15], c='y', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 16], c='y', marker='.', s=1)
-                                ax0.scatter(x, np.array(gesture_1D)[:, 17], c='y', marker='.', s=1)
+                                l_head = ax0.scatter(x, np.array(gesture_time_1D)[:, 0], c='y', marker='.', s=1)
+                                l_head = ax0.scatter(x, np.array(gesture_time_1D)[:, 1], c='y', marker='.', s=1)
+                                l_hands = ax0.scatter(x, np.array(gesture_time_1D)[:, 2], c='r', marker='.', s=1)
+                                l_hands = ax0.scatter(x, np.array(gesture_time_1D)[:, 3], c='r', marker='.', s=1)
+                                l_hands = ax0.scatter(x, np.array(gesture_time_1D)[:, 4], c='r', marker='.', s=1)
+                                l_hands = ax0.scatter(x, np.array(gesture_time_1D)[:, 5], c='r', marker='.', s=1)
+                                l_hands = ax0.scatter(x, np.array(gesture_time_1D)[:, 6], c='r', marker='.', s=1)
+                                l_hands = ax0.scatter(x, np.array(gesture_time_1D)[:, 7], c='r', marker='.', s=1)
+                                l_legs = ax0.scatter(x, np.array(gesture_time_1D)[:, 8], c='b', marker='.', s=1)
+                                l_legs = ax0.scatter(x, np.array(gesture_time_1D)[:, 9], c='b', marker='.', s=1)
+                                l_legs = ax0.scatter(x, np.array(gesture_time_1D)[:, 10], c='b', marker='.', s=1)
+                                l_legs = ax0.scatter(x, np.array(gesture_time_1D)[:, 11], c='b', marker='.', s=1)
+                                l_legs = ax0.scatter(x, np.array(gesture_time_1D)[:, 12], c='b', marker='.', s=1)
+                                l_legs = ax0.scatter(x, np.array(gesture_time_1D)[:, 13], c='b', marker='.', s=1)
+                                l_head = ax0.scatter(x, np.array(gesture_time_1D)[:, 14], c='y', marker='.', s=1)
+                                l_head = ax0.scatter(x, np.array(gesture_time_1D)[:, 15], c='y', marker='.', s=1)
+                                l_head = ax0.scatter(x, np.array(gesture_time_1D)[:, 16], c='y', marker='.', s=1)
+                                l_head = ax0.scatter(x, np.array(gesture_time_1D)[:, 17], c='y', marker='.', s=1)
+                                plt.xlabel('Joints')
+                                plt.ylabel('Distance')
+                                plt.ylim((-50, 50))
+                                plt.legend(handles=[l_head, l_hands, l_legs], labels=['head', 'hands', 'legs'], loc='best')
                                 # plt.draw()
                                 # plt.pause(0.001)
+                                plt.close()
                                 t += 1
                             fig = plt.gcf()
-                            dir_path = 'C:\\dataset\\txt_aug_vs_mat' + '/' + str(dirname)
+                            dir_path = 'C:\\dataset\\txt_aug_matplot' + '/' + str(dirname)
                             mkdir(dir_path)
                             path_save_all = dir_path + '/' + str(dname) + str(dirname) + '.png'
                             fig.savefig(path_save_all, dpi=200)
@@ -191,9 +208,10 @@ def read_data(path):
     n_classes = label
     seq_len = gesture_all_1D_padded.shape[1]
     print('seq_len', seq_len, 'n_classes', n_classes, 'n_channels', n_channels, 'class_names', class_names)
-    return gesture_all_1D_padded, np.array(labels), n_channels, n_classes, seq_len, class_names
 
 
+data_path = 'C:\\dataset\\txt_aug_clean'
+read_data(data_path)
 
 def standardize(train, test):
     """ Standardize data """
